@@ -25,3 +25,5 @@ print (miPerrito2.raza,miPerrito2.nombre)
 print (miPerrito3.raza,miPerrito3.nombre)
 
 miPerrito3.Ladrar()
+miPerrito1.Ladrar()
+miPerrito2.Ladrar()
