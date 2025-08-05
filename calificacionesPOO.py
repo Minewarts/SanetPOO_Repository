@@ -5,7 +5,7 @@ class Estudiante:
         self.calificaciones=[]
     
     def MostrarDatos(self):
-        print(self.nombre,"\n",self.edad,"\n",self.calificaciones)
+        print("Nombre: ",self.nombre,"Edad: ",self.edad,"Calificaciones: ",self.calificaciones)
     
     def CalcularPromedio(self):
         suma=sum(self.calificaciones)
@@ -36,10 +36,14 @@ while True:
         listaEstudiantes.append(estudiante1)
     
     elif opcion == 2:
-        numeroEstudiantes=len(listaEstudiantes)
-        print ("el numero de estudiante es: ", numeroEstudiantes)
-            for estudiante  in listaEstudiantes:
-                print
+        numeroEstudiantes = len(listaEstudiantes)
+        print("El número de estudiantes es:", numeroEstudiantes)
+        for estudiante in listaEstudiantes:
+            estudiante.MostrarDatos()
+    elif opcion == 3:
+        break
+    else:
+        print("Opcion no valida")
 
     
     
