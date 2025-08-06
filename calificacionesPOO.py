@@ -45,6 +45,7 @@ while True:
     else:
         print("Opcion no valida")'''
 
+#____________//___________//____________//___________//____________//___________//
 
 '''class Producto:
     def __init__(self, nombre, precio, cantidad):
@@ -76,6 +77,8 @@ producto.mostrarInformacion()
 
 cantidadVender = int(input("Ingrese la cantidad que desea vender: "))
 producto.vender(cantidadVender)'''
+
+#____________//___________//____________//___________//____________//___________//
 
 class CuentaBancaria:
     def __init__(self, numeroCuenta, nombreTitular, saldoInicial):
