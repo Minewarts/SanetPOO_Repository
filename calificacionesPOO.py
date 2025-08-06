@@ -47,8 +47,9 @@ while True:
 
 #____________//___________//____________//___________//____________//___________//
 
-'''class Producto:
-    def __init__(self, nombre, precio, cantidad):
+class Producto:
+    def __init__(self, codigo, nombre, precio, cantidad):
+        self.codigo = codigo
         self.nombre = nombre
         self.precio = precio
         self.cantidad = cantidad
@@ -57,30 +58,74 @@ while True:
         if cantidadVendida <= self.cantidad:
             self.cantidad -= cantidadVendida
             total = self.precio * cantidadVendida
-            print(f"Se vendieron {cantidadVendida} unidades de '{self.nombre}'. Total: ${total:.2f}")
+            print(f"Se vendieron {cantidadVendida} unidades de '{self.nombre}'. Total: ${total}")
             print(f"Quedan {self.cantidad} unidades disponibles.")
         else:
             print(f"No hay suficientes unidades de '{self.nombre}'. Solo quedan {self.cantidad} unidades.")
 
     def mostrarInformacion(self):
+        print(f"Código: {self.codigo}")
         print(f"Producto: {self.nombre}")
         print(f"Precio: ${self.precio}")
         print(f"Cantidad disponible: {self.cantidad} unidades")
 
 
-nombre = input("Ingrese el nombre del producto: ")
-precio = float(input("Ingrese el precio del producto: "))
-cantidad = int(input("Ingrese la cantidad disponible: "))
+def buscarProductoPorCodigo(codigoBuscado):
+    for producto in listaDeProductos:
+        if producto.codigo.lower() == codigoBuscado.lower():
+            return producto
+    return None
 
-producto = Producto(nombre, precio, cantidad)
-producto.mostrarInformacion()
+listaDeProductos = []
 
-cantidadVender = int(input("Ingrese la cantidad que desea vender: "))
-producto.vender(cantidadVender)'''
+while True:
+    print("_______// Menú //_______")
+    print("1. Vender producto")
+    print("2. Mostrar productos en stock")
+    print("3. Salir")
+
+    seleccion = input("Ingrese su selección: ")
+
+    if seleccion == "1":
+        codigo = input("Ingrese el código del producto: ")
+        productoExistente = buscarProductoPorCodigo(codigo)
+
+        if productoExistente:
+            cantidadVender = int(input("Ingrese la cantidad que desea vender: "))
+            productoExistente.vender(cantidadVender)
+        else:
+            print("Quiere Añadir Un producto?: ")
+            seleccion2=str(input("Ingrese su opcion: "))
+
+            if seleccion2.lower =="si":
+                nombre = input("Ingrese el nombre del producto: ")
+                precio = float(input("Ingrese el precio del producto: "))
+                cantidad = int(input("Ingrese la cantidad disponible: "))
+                nuevoProducto = Producto(codigo, nombre, precio, cantidad)
+                listaDeProductos.append(nuevoProducto)
+                nuevoProducto.mostrarInformacion()
+                cantidadVender = int(input("Ingrese la cantidad que desea vender: "))
+                nuevoProducto.vender(cantidadVender)
+            else:
+                print("El Producto no existe")
+
+    elif seleccion == "2":
+        if not listaDeProductos:
+            print("No hay productos registrados.")
+        else:
+            print("\nProductos registrados:")
+            for producto in listaDeProductos:
+                producto.mostrarInformacion()
+
+    elif seleccion == "3":
+        print("Saliendo del sistema.")
+        break
+    else:
+        print("Opción no válida.")
 
 #____________//___________//____________//___________//____________//___________//
 
-class CuentaBancaria:
+'''class CuentaBancaria:
     def __init__(self, numeroCuenta, nombreTitular, saldoInicial):
         self.numeroCuenta = numeroCuenta
         self.nombreTitular = nombreTitular
@@ -125,4 +170,4 @@ while True:
         print("Gracias por usar el sistema bancario.")
         break
     else:
-        print("Opción no válida.")
+        print("Opción no válida.")'''
