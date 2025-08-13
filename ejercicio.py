@@ -15,7 +15,7 @@ while True:
     print("4. Salir")
     seleccion=int(input("Ingrese su opcion: "))
     if seleccion==1:
-        personaAdd=Persona(input("Ingrese su nombre"))
+        personaAdd=Persona(input("Ingrese su nombre: "))
         listaDePersonas.append(Persona)
     elif(seleccion==2):
         print(listaDePersonas)
