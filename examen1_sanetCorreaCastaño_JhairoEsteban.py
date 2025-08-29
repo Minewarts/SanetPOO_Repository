@@ -19,8 +19,8 @@ while True:
         autor=input("Ingrese el Autor: ")
         añoDePublicacion= int(input("Ingrese el año depublicacion: "))
         genero=input("Ingrese el genero del libro: ")
-        Libro=Libro(tituloLibro,autor,añoDePublicacion,genero)
-        listaDeLibros.append(Libro)
+        libroNuevo=Libro(tituloLibro,autor,añoDePublicacion,genero)
+        listaDeLibros.append(libroNuevo)
         print("Libro agregado correctamente")
 
     #Mostrar libros registrados 
