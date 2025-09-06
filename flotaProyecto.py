@@ -34,32 +34,24 @@ class Flota:
                 
                 
 class Auto:
-    def __init__(self,modeloVehiculo,caballos, modelo):
+    def __init__(self, modeloVehiculo, caballos, modelo):
         self.modeloVehiculo = modeloVehiculo
         self.__placa = None
-        
         self.__motor = Motor(modelo, int(caballos))
-        self.servicio = "Disponible"
-
-   
-    @property
-    def placa(self):
-        return self.__placa
+        self.servicio = False  # bool en vez de str
     
-    def ColocarPlaca(self,placa):
+    def ColocarPlaca(self, placa):
         self.__placa = placa
     
     def MostrarInfo(self):
-        print(f"Placa: {self.__placa} -- Modelo: {self.modeloVehiculo} -- Motor/Estado: {self.__motor.estado} -- Servicio: {self.servicio}")
+        estado_servicio = "En servicio" if self.servicio else "Disponible"
+        print(f"Placa: {self.__placa} -- Modelo: {self.modeloVehiculo} -- "
+              f"Motor/Estado: {self.__motor.estado} -- Servicio: {estado_servicio}")
         
     def CambiarEstado(self):
-        if self.servicio == "Disponible":
-            self.servicio = "En servicio"
-        else:
-            self.servicio = "Disponible"
+        self.servicio = not self.servicio
         print("Cambiando estado de servicio...")
 
-    
     def EncenderApagarMotor(self):
         self.__motor.EncenderApagar()
 
