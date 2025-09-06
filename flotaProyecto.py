@@ -3,7 +3,6 @@ class Flota:
         self.__autos=[]
         
     def AgregarAuto(self,auto):
-        # Usa la propiedad 'placa' (agregada en Auto más abajo)
         for autoi in self.__autos:
             if autoi.placa == auto.placa:
                 print("Auto ya existe")
@@ -25,7 +24,7 @@ class Flota:
                 autoi.MostrarInfo()
                 return autoi
         print("Auto no encontrado")
-        return None  # <- importante para poder verificar en el menú
+        return None  
 
     def MostrarReporte(self):
         print ("Reporte de autos en la flota")
