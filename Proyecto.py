@@ -36,20 +36,12 @@ class TiendaMascotas:
                 return
         print("Producto no encontrado en la tienda")
 
-    def VenderProducto(self, usuario, idProducto):
-        for producto in self.__mascotas:
-            if producto.id == idProducto:
-                usuario.productosComprados.append(producto)
-                print(f"{usuario.nombre} compró {producto.nombre} por ${producto.precio}")
-                self.__mascotas.remove(producto)
-                return
-        print("Producto no encontrado en la tienda")
-
     def VenderMascota(self, usuario, idMascota):
         for mascota in self.__mascotas:
             if mascota.id == idMascota:
                 usuario.mascotasCompradas.append(mascota)
                 print(f"{usuario.nombre} compró {mascota.nombre} por ${mascota.precio}")
+                self.__mascotas.remove(mascota)
                 return
         print("Mascota no encontrada en la tienda")
 
@@ -63,7 +55,7 @@ class TiendaMascotas:
                     
 class Mascotas: 
     def __init__(self,idMascota, nombre, edad, especie):
-        self.idMascota = idMascota
+        self.__idMascota = idMascota
         self.nombre = nombre
         self.edad = edad
         self.especie = especie
@@ -76,6 +68,8 @@ class Mascotas:
     
     def MostrarAnimal(self):
         print(f"ID: {self.idMascota}, Nombre: {self.nombre}, Edad: {self.edad}, Especie: {self.especie}")
+    def getId(self):
+        return self.__idMascota
 
 class Perros(Mascotas):
 
@@ -96,13 +90,16 @@ class Pajaro(Mascotas):
 
 class Productos:
     def __init__(self, id, nombre, precio, tipo):
-        self.id = id 
+        self.__id = id 
         self.nombre = nombre 
         self.precio = precio
         self.tipo = tipo
         
     def MostrarInfo(self):
         print(f"ID: {self.id}, Nombre: {self.nombre}, Precio: ${self.precio}, Tipo: {self.tipo}")
+    
+    def getId(self):
+        return self.__id
 
 class Usuarios:
     def __init__(self, nombre):
