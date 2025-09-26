@@ -68,6 +68,7 @@ class Mascotas:
     
     def MostrarAnimal(self):
         print(f"ID: {self.idMascota}, Nombre: {self.nombre}, Edad: {self.edad}, Especie: {self.especie}")
+
     def getId(self):
         return self.__idMascota
 
@@ -105,6 +106,7 @@ class Usuarios:
     def __init__(self, nombre):
         self.nombre = nombre
         self.productosComprados = []
+        self.mascotasCompradas = []
     
 
     def MostrarCompras(self):
@@ -114,6 +116,13 @@ class Usuarios:
             print(f"{self.nombre} ha comprado:")
             for producto in self.productosComprados:
                 print(f"- {producto.nombre} (${producto.precio})")
+    def MostrarMascotas(self):
+        if not self.mascotasCompradas:
+            print(f"{self.nombre} no ha comprado mascotas todavía.")
+        else:
+            print(f"{self.nombre} ha comprado las siguientes mascotas:")
+            for mascota in self.mascotasCompradas:
+                print(f"- {mascota.nombre} ({mascota.especie})")
 
 
 tienda  = TiendaMascotas("C++cotas","Calle 123")           
@@ -129,6 +138,7 @@ while True:
     print("5. Vender Producto")
     print("6. Vender Mascota")
     print("7. Mostrar Historial de ventas")
+    print("8. Mostrar Mascotas Compradas por Usuario")
     print("0. Salir")
 
     opcion = int(input("Ingrese su opcion: "))
@@ -215,8 +225,37 @@ while True:
                     break
             if existe1 == False:
                 print("El producto no se encuentra en la tienda")
-
     elif opcion == 6:
+        nombre = input("Ingrese su nombre: ").capitalize()
+        existe = False
+        usuario = None
+        for i in tienda.getClientes():
+            if i.nombre == nombre:        
+                print("El cliente ya existe en la tienda, proceda con su compra")
+                usuario = i
+                existe = True
+        
+        if existe== False:
+            usuario = Usuarios(nombre)
+            tienda.AgregarCliente(usuario)
+            print("Se ha añadido el cliente exitosamente")
+
+        if not tienda.getMascotas():
+            print("No hay mascotas en la tienda")
+        else:
+            print("Mascotas disponibles en la tienda:")
+            for mascota in tienda.getMascotas():
+                mascota.MostrarAnimal()
+            idMascota = int(input("Ingrese el ID de la mascota que desea comprar: "))
+            existe1 = False
+            for mascota in tienda.getMascotas():
+                if mascota.getId() == idMascota:
+                    tienda.VenderMascota(usuario, idMascota)
+                    existe1 = True
+                    break
+            if existe1 == False:
+                print("La mascota no se encuentra en la tienda")
+    elif opcion == 7:
         tienda.MostrarHistorialVentas() 
 
     elif opcion == 0:
