@@ -1,22 +1,91 @@
 # Proyecto Tienda de Mascotas Entregable
 # Sanet Correa Castaño, Jhairo Esteban Muñeton Cortes
 # 2025-2
+from dataclasses import dataclass,field
+from typing import List
 
+@dataclass                   
+class Mascotas: 
+    __idMascota: int=field(repr=False)
+    nombre: str
+    edad: int
+    precio: float
+    especie: str
+    
+    def HacerSonido(self)->None:
+        pass
+
+    def Comer(self)-> str:
+        print(f"{self.nombre} está comiendo ")
+    
+    def MostrarAnimal(self)-> str:
+        print(f"ID: {self.idMascota}, Nombre: {self.nombre}, Edad: {self.edad}, Especie: {self.especie}")
+
+    def getId(self)-> int:
+        return self.__idMascota
+@dataclass
+class Perros(Mascotas):
+    def HacerSonido(self)->str:
+        print(f"{self.nombre} hace guau guau")
+@dataclass
+class Gatos(Mascotas):
+    def HacerSonido(self)->str:
+        print(f"{self.nombre} hace miau miau")
+@dataclass
+class Pez(Mascotas):
+    def HacerSonido(self)->str:
+        print(f"{self.nombre} hace glu glu")
+@dataclass
+class Pajaro(Mascotas):
+    def HacerSonido(self)->str:
+        print(f"{self.nombre} hace pio pio")
+@dataclass
+class Productos:
+    __id: int=field(repr=False)
+    nombre: str
+    precio: float
+    tipo: str
+    def MostrarInfo(self)-> str:
+        print(f"ID: {self.id}, Nombre: {self.nombre}, Precio: ${self.precio}, Tipo: {self.tipo}")
+    
+    def getId(self)-> int:
+        return self.__id
+@dataclass
+class Usuarios:
+    nombre: str
+    __productosComprados: List[Productos]=field(repr=False,default_factory=list)
+    __mascotasCompradas: List[Mascotas]=field(repr=False,default_factory=list)
+
+    def MostrarCompras(self):
+        if not self.__productosComprados:
+            print(f"{self.nombre} no ha comprado nada todavía.")
+        else:
+            print(f"{self.nombre} ha comprado:")
+            for producto in self.__productosComprados:
+                print(f"- {producto.nombre} (${producto.precio})")
+    def MostrarMascotas(self):
+        if not self.__mascotasCompradas:
+            print(f"{self.nombre} no ha comprado mascotas todavía.")
+        else:
+            print(f"{self.nombre} ha comprado las siguientes mascotas:")
+            for mascota in self.__mascotasCompradas:
+                print(f"- {mascota.nombre} ({mascota.especie})")
+
+@dataclass
 class TiendaMascotas:
-    def __init__(self, nombre, direccion):
-        self.nombre = nombre
-        self.direccion = direccion
-        self.__clientes = []         
-        self.__mascotas = []
-        self.__productos = []
+    nombre: str
+    direccion: str
+    __clientes: List[Usuarios]=field(repr=False,default_factory=list)
+    __mascotas: list=field(repr=False,default_factory=list)
+    __productos: list=field(repr=False,default_factory=list)
 
-    def getProductos(self):
+    def getProductos(self) -> list:
         return self.__productos
 
-    def getMascotas(self):
+    def getMascotas(self)-> list:
         return self.__mascotas
 
-    def getClientes(self):
+    def getClientes(self)-> list:
         return self.__clientes
 
     def AgregarCliente(self, cliente):
@@ -52,77 +121,6 @@ class TiendaMascotas:
     def MostrarProductos(self):
         for producto in self.__productos:
             producto.MostrarInfo()
-                    
-class Mascotas: 
-    def __init__(self,idMascota, nombre, edad, especie):
-        self.__idMascota = idMascota
-        self.nombre = nombre
-        self.edad = edad
-        self.especie = especie
-
-    def HacerSonido(self):
-        pass
-
-    def Comer(self):
-        print(f"{self.nombre} está comiendo ")
-    
-    def MostrarAnimal(self):
-        print(f"ID: {self.idMascota}, Nombre: {self.nombre}, Edad: {self.edad}, Especie: {self.especie}")
-
-    def getId(self):
-        return self.__idMascota
-
-class Perros(Mascotas):
-
-    def HacerSonido(self):
-        print(f"{self.nombre} hace guau guau")
-
-class Gatos(Mascotas):
-    def HacerSonido(self):
-        print(f"{self.nombre} hace miau miau")
-
-class Pez(Mascotas):
-    def HacerSonido(self):
-        print(f"{self.nombre} hace glu glu")
-
-class Pajaro(Mascotas):
-    def HacerSonido(self):
-        print(f"{self.nombre} hace pio pio")
-
-class Productos:
-    def __init__(self, id, nombre, precio, tipo):
-        self.__id = id 
-        self.nombre = nombre 
-        self.precio = precio
-        self.tipo = tipo
-        
-    def MostrarInfo(self):
-        print(f"ID: {self.id}, Nombre: {self.nombre}, Precio: ${self.precio}, Tipo: {self.tipo}")
-    
-    def getId(self):
-        return self.__id
-
-class Usuarios:
-    def __init__(self, nombre):
-        self.nombre = nombre
-        self.productosComprados = []
-        self.mascotasCompradas = []
-    
-
-    def MostrarCompras(self):
-        if not self.productosComprados:
-            print(f"{self.nombre} no ha comprado nada todavía.")
-        else:
-            print(f"{self.nombre} ha comprado:")
-            for producto in self.productosComprados:
-                print(f"- {producto.nombre} (${producto.precio})")
-    def MostrarMascotas(self):
-        if not self.mascotasCompradas:
-            print(f"{self.nombre} no ha comprado mascotas todavía.")
-        else:
-            print(f"{self.nombre} ha comprado las siguientes mascotas:")
-            for mascota in self.mascotasCompradas:
-                print(f"- {mascota.nombre} ({mascota.especie})")
 
 
 tienda  = TiendaMascotas("C++cotas","Calle 123")           
