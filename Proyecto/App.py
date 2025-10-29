@@ -13,7 +13,7 @@ print("Bienvenido a nuestra tienda")
 print(tienda.nombre, "Direccion: ", tienda.direccion)
 
 
-ESPECIES_VALIDAS = {
+especiesValidas = {
     "Perro": Perros,
     "Gato": Gatos,
     "Pez": Pez,
@@ -46,25 +46,25 @@ while True:
             nombre = input("ingresa El nombre del producto: ").capitalize()
             for producto in tienda.getProductos():
                 if producto.nombre == nombre:
-                    print("El producto ya existe en la tienda")
+                    print("El producto ya existe en la tienda. No se agregará.")
                     break
-            
-            try:
-                precio = float(input("ingresa el precio del producto: "))
-            except ValueError:
-                raise EntradaInvalidaError("El precio debe ser un número válido.")
+            else:
+                try:
+                    precio = float(input("ingresa el precio del producto: "))
+                except ValueError:
+                    raise EntradaInvalidaError("El precio debe ser un número válido.")
+                    
+                tipo = input("ingresa el tipo de producto (Alimento, Juguete, Accesorio): ").capitalize()
                 
-            tipo = input("ingresa el tipo de producto (Alimento, Juguete, Accesorio): ").capitalize()
-            
-            producto = Productos(nombre, precio, tipo) 
-            tienda.AgregarProducto(producto)
-            print("Se ha añadido el producto exitosamente")
+                producto = Productos(nombre, precio, tipo) 
+                tienda.AgregarProducto(producto)
+                print("Se ha añadido el producto exitosamente")
             
         elif opcion == 2:
             nomMascota = input("Ingrese el nombre de la mascota: ").capitalize()
             especieMascota = input("Ingrese la especie de la mascota (Perro, Gato, Pez, Pajaro): ").capitalize()
             
-            if especieMascota not in ESPECIES_VALIDAS:
+            if especieMascota not in especiesValidas:
                 raise EspecieInvalidaError(especieMascota)
 
             try:
@@ -76,23 +76,19 @@ while True:
                 precioMascota = float(input("Ingrese el precio de la mascota: "))
             except ValueError:
                 raise EntradaInvalidaError("El precio de la mascota debe ser un número válido.")
-                 
+                    
             for mascota in tienda.getMascotas():
                 if mascota.nombre == nomMascota and mascota.especie == especieMascota:
-                    print("La mascota ya existe en la tienda")
+                    print("Una mascota con ese nombre y especie ya existe en la tienda.")
                     break
-
-            ClaseMascota = ESPECIES_VALIDAS[especieMascota]
-            mascota = ClaseMascota(nomMascota, edadMascota, precioMascota, especieMascota)
-            tienda.AgregarMascota(mascota)
-            print("Se ha añadido la mascota exitosamente")
-                
-        elif opcion == 3:
-            if not tienda.getProductos():
-                print("No hay productos en la tienda")
             else:
-                print("Productos disponibles en la tienda:")
-                tienda.MostrarProductos() 
+                ClaseMascota = especiesValidas[especieMascota]
+                mascota = ClaseMascota(nomMascota, edadMascota, precioMascota)
+                tienda.AgregarMascota(mascota)
+                print("Se ha añadido la mascota exitosamente")
+                    
+        elif opcion == 3:
+            tienda.MostrarProductos() 
 
         elif opcion == 4:
             if not tienda.getMascotas():
@@ -104,16 +100,16 @@ while True:
                     
         elif opcion == 5:
             nombre = input("Ingrese su nombre: ").capitalize()
-            existe = False
             usuario = None
+            
+            # Buscar o crear usuario
             for i in tienda.getClientes():
                 if i.nombre == nombre:
                     print("El cliente ya existe en la tienda, proceda con su compra")
                     usuario = i
-                    existe = True
                     break
             
-            if existe == False:
+            if usuario is None:
                 usuario = Usuarios(nombre)
                 tienda.AgregarCliente(usuario)
                 print("Se ha añadido el cliente exitosamente")
@@ -126,29 +122,20 @@ while True:
                 
                 idProducto = input("Ingrese el ID del producto que desea comprar: ")
                 
-                existe1 = False
-                for producto in tienda.getProductos():
-
-                    if producto.GetId() == idProducto:
-                        tienda.VenderProducto(usuario, idProducto)
-                        existe1 = True
-                        break
-                        
-                if existe1 == False:
-                    raise ItemNoEncontradoError(idProducto, "producto")
+                tienda.VenderProducto(usuario, idProducto)
                     
         elif opcion == 6:
             nombre = input("Ingrese su nombre: ").capitalize()
-            existe = False
             usuario = None
+            
+            # Buscar o crear usuario
             for i in tienda.getClientes():
                 if i.nombre == nombre:
                     print("El cliente ya existe en la tienda, proceda con su compra")
                     usuario = i
-                    existe = True
                     break
             
-            if existe == False:
+            if usuario is None:
                 usuario = Usuarios(nombre)
                 tienda.AgregarCliente(usuario)
                 print("Se ha añadido el cliente exitosamente")
@@ -162,29 +149,19 @@ while True:
                     
                 idMascota = input("Ingrese el ID de la mascota que desea comprar: ")
                 
-                existe1 = False
-                for mascota in tienda.getMascotas():
-                    if mascota.GetId() == idMascota:
-                        tienda.VenderMascota(usuario, idMascota)
-                        existe1 = True
-                        break
-                        
-                if existe1 == False:
-                    raise ItemNoEncontradoError(idMascota, "mascota")
+                tienda.VenderMascota(usuario, idMascota)
                     
         elif opcion == 7:
             tienda.MostrarHistorialVentas() 
 
         elif opcion == 8:
             nombre = input("Ingrese su nombre: ").capitalize()
-            existe = False
             usuario = None
             for i in tienda.getClientes():
                 if i.nombre == nombre:
                     usuario = i
-                    existe = True
                     break
-            if existe:
+            if usuario:
                 usuario.MostrarMascotas()
             else:
                 print("El cliente no existe en la tienda")

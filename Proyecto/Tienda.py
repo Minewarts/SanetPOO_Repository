@@ -17,7 +17,7 @@ class TiendaMascotas:
         try:
             with open ('Clientes.csv', 'w') as f:
 
-                f.write('Nombre,Mascotas_Compradas_IDs,Productos_Comprados_IDs\n')
+                f.write('Nombre,Mascotas_Compradas_Nombres,Productos_Comprados_Nombres\n')
                 for c in self.__clientes:
 
                     mascotas_nombres = ";".join([m.nombre for m in c.GetListaMascotas])
@@ -48,40 +48,43 @@ class TiendaMascotas:
         self.__mascotas.append(mascota)
 
 
-    def VenderProducto(self, usuario: Usuarios, idProducto: int):
+    def VenderProducto(self, usuario: Usuarios, idProducto: str): 
 
         
         producto_a_vender = None
         for producto in self.__productos:
-            if producto.id == idProducto:
+
+            if producto.GetId() == idProducto: 
                 producto_a_vender = producto
                 break
         
         if producto_a_vender:
 
-            usuario.agregar_producto(producto_a_vender) 
-            print(f"¡Venta exitosa! {usuario.nombre} compró {producto_a_vender.nombre} por ${producto_a_vender.precio}.")
+            usuario.AgregarProducto(producto_a_vender) 
+            print(f"¡Venta exitosa! {usuario.nombre} compró {producto_a_vender.nombre} por ${producto_a_vender.precio:,.2f}.")
         else:
 
-            raise ItemNoEncontradoError(str(idProducto), "producto")
+            raise ItemNoEncontradoError(idProducto, "producto")
 
-    def VenderMascota(self, usuario: Usuarios, idMascota: int):
+
+    def VenderMascota(self, usuario: Usuarios, idMascota: str): 
 
         
         mascota_a_vender = None
         for mascota in self.__mascotas:
-            if mascota.id == idMascota:
+
+            if mascota.getId() == idMascota:
                 mascota_a_vender = mascota
                 break
         
         if mascota_a_vender:
 
-            usuario.agregar_mascota(mascota_a_vender)
-            print(f"¡Venta exitosa! {usuario.nombre} compró {mascota_a_vender.nombre} por ${mascota_a_vender.precio}.")
+            usuario.AgregarMascota(mascota_a_vender)
+            print(f"¡Venta exitosa! {usuario.nombre} compró {mascota_a_vender.nombre} por ${mascota_a_vender.precio:,.2f}.")
             self.__mascotas.remove(mascota_a_vender)
         else:
 
-            raise ItemNoEncontradoError(str(idMascota), "mascota")
+            raise ItemNoEncontradoError(idMascota, "mascota")
 
     def MostrarHistorialVentas(self):
         if not self.__clientes:
