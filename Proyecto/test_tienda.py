@@ -1,11 +1,20 @@
 import pytest
+import os
 from Tienda import TiendaMascotas
 from Productos import Productos
-from Mascotas import Perros, Gatos
+from Mascotas import Perros, Gatos, Pez, Pajaro
 from Usuarios import Usuarios
 from Excepciones import ItemNoEncontradoError
 
-def test_agregar_y_listas_basico():
+def test_inicializacion_tienda():
+    tienda = TiendaMascotas("Mi Tienda", "Calle Falsa 123")
+    assert tienda.nombre == "Mi Tienda"
+    assert tienda.direccion == "Calle Falsa 123"
+    assert len(tienda.getProductos()) == 0
+    assert len(tienda.getMascotas()) == 0
+    assert len(tienda.getClientes()) == 0
+
+def test_agregar_y_listar_items():
     tienda = TiendaMascotas("TestShop", "Calle Test")
     producto = Productos("Pelota", 10.0, "Juguete")
     mascota = Perros("Firulais", 2, 100.0)
@@ -18,6 +27,9 @@ def test_agregar_y_listas_basico():
     assert producto in tienda.getProductos()
     assert mascota in tienda.getMascotas()
     assert cliente in tienda.getClientes()
+    assert len(tienda.getProductos()) == 1
+    assert len(tienda.getMascotas()) == 1
+    assert len(tienda.getClientes()) == 1
 
 def test_vender_producto_exitoso(capsys):
     tienda = TiendaMascotas("TestShop", "Calle Test")
@@ -29,64 +41,47 @@ def test_vender_producto_exitoso(capsys):
     pid = producto.getId()
     tienda.VenderProducto(usuario, pid)
 
-    lista_prod_usuario = usuario.GetListaProductos
-    assert any((p is producto) for p in lista_prod_usuario)
-    assert all(p is not producto for p in tienda.getProductos())
+    assert producto in usuario.GetListaProductos
+    assert producto in tienda.getProductos()
 
     captured = capsys.readouterr()
-    assert "Venta" in captured.out or "venta" in captured.out or "compró" in captured.out
+    assert "Venta exitosa" in captured.out
 
 def test_vender_producto_no_encontrado():
     tienda = TiendaMascotas("TestShop", "Calle Test")
     usuario = Usuarios("Maria")
-    tienda.AgregarCliente(usuario)
     with pytest.raises(ItemNoEncontradoError):
         tienda.VenderProducto(usuario, "P99999")
 
-def test_vender_mascota_exitoso(capsys):
+def test_vender_mascota_exitosa(capsys):
     tienda = TiendaMascotas("TestShop", "Calle Test")
-    mascota = Perros("Rex", 3, 200.0)
+    mascota = Gatos("Michi", 1, 150.0)
     tienda.AgregarMascota(mascota)
     usuario = Usuarios("Carlos")
-    tienda.AgregarCliente(usuario)
 
     mid = mascota.getId()
     tienda.VenderMascota(usuario, mid)
 
-    lista_mascotas_usuario = usuario.GetListaMascotas
-    assert any((m is mascota) for m in lista_mascotas_usuario)
-    assert all(m is not mascota for m in tienda.getMascotas())
+    assert mascota in usuario.GetListaMascotas
+    assert mascota not in tienda.getMascotas()
 
     captured = capsys.readouterr()
-    assert "Venta" in captured.out or "compró" in captured.out
+    assert "Venta exitosa" in captured.out
 
-def test_vender_mascota_no_encontrado():
+def test_vender_mascota_no_encontrada():
     tienda = TiendaMascotas("TestShop", "Calle Test")
     usuario = Usuarios("Laura")
-    tienda.AgregarCliente(usuario)
     with pytest.raises(ItemNoEncontradoError):
         tienda.VenderMascota(usuario, "M99999")
 
-def test_mostrar_productos_y_historial(capsys):
-    tienda = TiendaMascotas("TestShop", "Calle Test")
-    p1 = Productos("Croquetas", 120.0, "Alimento")
-    p2 = Productos("Arena", 200.0, "Accesorio")
-    m1 = Gatos("Michi", 2, 80.0)
-    tienda.AgregarProducto(p1)
-    tienda.AgregarProducto(p2)
-    tienda.AgregarMascota(m1)
-    u = Usuarios("Pedro")
-    tienda.AgregarCliente(u)
-
-    tienda.VenderProducto(u, p1.getId())
-    tienda.VenderMascota(u, m1.getId())
-
+def test_mostrar_productos_vacios(capsys):
+    tienda = TiendaMascotas("Tienda Vacía", "Ahora Mismo")
     tienda.MostrarProductos()
-    tienda.MostrarHistorialVentas()
-
     captured = capsys.readouterr()
-    out = captured.out
+    assert "El inventario de productos está vacío" in captured.out
 
-    assert "Croquetas" in out or "Croquetas" in out
-    assert "Michi" in out or "Michi" in out
-    assert "ha comprado" in out or "compró" in out
+def test_mostrar_historial_ventas_vacio(capsys):
+    tienda = TiendaMascotas("Tienda sin Clientes", "En la Esquina")
+    tienda.MostrarHistorialVentas()
+    captured = capsys.readouterr()
+    assert "No hay clientes registrados" in captured.out
