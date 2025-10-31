@@ -4,47 +4,59 @@ import uuid
 from Excepciones import EdadInvalidaError
 import random
 
+def generar_mascota_id():
+    return "M" + str(random.randint(1, 99999)).zfill(5)
 
-@dataclass               
-class Mascotas(ABC): 
-    
-    __idMascota: str = field(repr=False, init=False, default_factory=lambda: str(uuid.uuid4()))
-    nombre: str
-    edad: int
-    precio: float
-    
-    def __post_init__(self):
+class Mascotas(ABC):  
+    def __init__(self, nombre: str, edad: int, precio: float):
+        if edad < 0:
+            raise EdadInvalidaError(edad)
+        self.nombre = nombre
+        self.edad = edad
+        self.precio = precio
+        self.__id_mascota = generar_mascota_id()
+        self.especie = type(self).__name__
 
-        if self.edad < 0:
-            raise EdadInvalidaError(self.edad)
+    def MostrarInfo(self) -> None:
+        print(f"ID: {self.__id_mascota}, Nombre: {self.nombre}, Edad: {self.edad}, Precio: ${self.precio:,.2f}, Especie: {self.especie}")
+
+    def getId(self):
+        return self.__id_mascota
+    
     @abstractmethod
-    def HacerSonido(self)->None:
+    def HacerSonido(self):
         ...
 
-    def Comer(self)-> str:
-        print(f"{self.nombre} está comiendo ")
-    
-    def MostrarAnimal(self)-> str:
- 
-        print(f"ID: {self.__idMascota}, Especie: {type(self).__name__}, Nombre: {self.nombre}, Edad: {self.edad}, Precio: ${self.precio:,.2f}")
 
-    def getId(self)-> str: 
-        return self.__idMascota
-    
-    
 
+@dataclass
 class Perros(Mascotas):
-    def HacerSonido(self)->str:
-        print(f"{self.nombre} hace guau guau")
+    def __init__(self, nombre: str, edad: int, precio: float):
+        super().__init__(nombre, edad, precio)
+        self.especie = "Perro"
+    def HacerSonido(self):
+        print(f"{self.nombre} hace guau guau", end="")
 
+@dataclass
 class Gatos(Mascotas):
-    def HacerSonido(self)->str:
-        print(f"{self.nombre} hace miau miau")
+    def __init__(self, nombre: str, edad: int, precio: float):
+        super().__init__(nombre, edad, precio)
+        self.especie = "Gato"
+    def HacerSonido(self):
+        print(f"{self.nombre} hace miau miau", end="")
 
+@dataclass
 class Pez(Mascotas):
-    def HacerSonido(self)->str:
-        print(f"{self.nombre} hace glu glu")
+    def __init__(self, nombre: str, edad: int, precio: float):
+        super().__init__(nombre, edad, precio)
+        self.especie = "Pez"
+    def HacerSonido(self):
+        print(f"{self.nombre} hace glu glu", end="")
 
+@dataclass
 class Pajaro(Mascotas):
-    def HacerSonido(self)->str:
-        print(f"{self.nombre} hace pio pio")
+    def __init__(self, nombre: str, edad: int, precio: float):
+        super().__init__(nombre, edad, precio)
+        self.especie = "Pajaro"
+    def HacerSonido(self):
+        print(f"{self.nombre} hace pio pio", end="")

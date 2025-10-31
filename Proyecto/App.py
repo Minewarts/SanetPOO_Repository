@@ -9,6 +9,11 @@ from Usuarios import Usuarios
 from Excepciones import ItemNoEncontradoError, EspecieInvalidaError, EntradaInvalidaError
 
 tienda = TiendaMascotas("C++cotas","Calle 123")
+try:
+    tienda.CargarDatos()
+except Exception:
+    pass
+
 print("Bienvenido a nuestra tienda")
 print(tienda.nombre, "Direccion: ", tienda.direccion)
 
@@ -96,13 +101,12 @@ while True:
             else:
                 print("Mascotas disponibles en la tienda:")
                 for mascota in tienda.getMascotas():
-                    mascota.MostrarAnimal()
+                    mascota.MostrarInfo()
                     
         elif opcion == 5:
             nombre = input("Ingrese su nombre: ").capitalize()
             usuario = None
             
-            # Buscar o crear usuario
             for i in tienda.getClientes():
                 if i.nombre == nombre:
                     print("El cliente ya existe en la tienda, proceda con su compra")
@@ -128,7 +132,6 @@ while True:
             nombre = input("Ingrese su nombre: ").capitalize()
             usuario = None
             
-            # Buscar o crear usuario
             for i in tienda.getClientes():
                 if i.nombre == nombre:
                     print("El cliente ya existe en la tienda, proceda con su compra")
@@ -145,7 +148,7 @@ while True:
             else:
                 print("Mascotas disponibles en la tienda:")
                 for mascota in tienda.getMascotas():
-                    mascota.MostrarAnimal()
+                    mascota.MostrarInfo()
                     
                 idMascota = input("Ingrese el ID de la mascota que desea comprar: ")
                 
@@ -167,6 +170,10 @@ while True:
                 print("El cliente no existe en la tienda")
                 
         elif opcion == 0:
+            try:
+                tienda.ActualizarBasesDatos()
+            except Exception:
+                pass
             print("Gracias por visitar. Saliendo del programa.")
             break
         

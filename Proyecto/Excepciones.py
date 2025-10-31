@@ -16,7 +16,7 @@ class EspecieInvalidaError(ErrorBaseTienda):
         super().__init__(f"La especie '{self.especie}' no es una especie válida.")
 
 class EntradaInvalidaError(ErrorBaseTienda):
-    """Excepción lanzada cuando la entrada del usuario no tiene el formato esperado (ej. esperar un número y recibir texto)."""
+    """Excepción lanzada cuando la entrada del usuario no tiene el formato esperado."""
     def __init__(self, mensaje: str):
         super().__init__(mensaje)
         
